@@ -3,6 +3,9 @@
 Minesweeper is, you guessed it, a clone of the classic Windows
 Minesweeper game.
 
+After converting the project to gradle I deleted the old repo and re-uploaded,
+so I lost the commit history. 
+
 ### Project Status ###
 
 There are still a few things missing, but the game can be played as is.
@@ -13,9 +16,6 @@ There are still a few things missing, but the game can be played as is.
 * Change smiley button icon when you lose the game
 * Game timer
 * Game score
-
-### Requirements ###
-
 
 <br />
 
