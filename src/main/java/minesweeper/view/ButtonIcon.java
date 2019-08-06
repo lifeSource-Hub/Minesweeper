@@ -37,15 +37,17 @@ public class ButtonIcon
     public final ImageIcon SEVEN;
     public final ImageIcon EIGHT;
     public final ImageIcon FLAG;
-    public final ImageIcon MINE;
-    public final ImageIcon EXPLODED;
     public final ImageIcon UNFLAGGED_MINE;
-    public final ImageIcon SMILEY;
+    public final ImageIcon EXPLODED;
+    public final ImageIcon MISFLAGGED_SPACE;
+    public final ImageIcon CHECK;
+
+    public final ImageIcon SMILEY_DEFAULT;
     public final ImageIcon SMILEY_PRESSED;
     public final ImageIcon SMILEY_SUSPENSE;
     public final ImageIcon SMILEY_WIN;
     public final ImageIcon SMILEY_DEAD;
-    public final ImageIcon CHECK;
+
     public final BufferedImage FRAME_ICON;
 
     public ButtonIcon()
@@ -61,15 +63,17 @@ public class ButtonIcon
         SEVEN = read("seven.png");
         EIGHT = read("eight.png");
         FLAG = read("flag.png");
-        MINE = read("mine.png");
-        EXPLODED = read("exploded.png");
         UNFLAGGED_MINE = read("unflaggedMine.png");
-        SMILEY = read("smiley.png");
+        EXPLODED = read("exploded.png");
+        MISFLAGGED_SPACE = read("misflaggedSpace.png");
+        CHECK = read("check.png");
+
+        SMILEY_DEFAULT = read("smiley.png");
         SMILEY_PRESSED = read("smileyPressed.png");
         SMILEY_SUSPENSE = read("smileySuspense.png");
         SMILEY_WIN = read("smileyWin.png");
         SMILEY_DEAD = read("smileyDead.png");
-        CHECK = read("check.png");
+
         FRAME_ICON = readBufferedImg("frame.png");
     }
 
@@ -83,7 +87,6 @@ public class ButtonIcon
         }
         catch (IOException e)
         {
-            // TODO try returning blank icon, using whole final String path
             Logger.error("Error reading icon " + name);
             e.printStackTrace();
             return null;
