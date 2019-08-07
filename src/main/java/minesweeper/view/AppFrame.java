@@ -7,10 +7,6 @@ import java.awt.*;
 
 public class AppFrame extends JFrame
 {
-    private HeaderPanel headerPnl;
-    private GridPanel gridPnl;
-    private PanelController panelController;
-
     public AppFrame()
     {
         this("Minesweeper");
@@ -18,10 +14,10 @@ public class AppFrame extends JFrame
 
     public AppFrame(String title)
     {
-        headerPnl = new HeaderPanel();
-        gridPnl = new GridPanel();
+        HeaderPanel headerPnl = new HeaderPanel();
+        GridPanel gridPnl = new GridPanel();
 
-        panelController = new PanelController();
+        PanelController panelController = new PanelController();
         panelController.setHeaderPnl(headerPnl);
         panelController.setGridPnl(gridPnl);
 

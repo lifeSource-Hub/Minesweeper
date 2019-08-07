@@ -27,13 +27,13 @@ public class MinefieldPlot
         return adjacentMines;
     }
 
-    public void toggleFlag()
-    {
-        hasFlag = !(isFlagged());
-    }
-
     void setAdjacentMines(int adjacentMines)
     {
         this.adjacentMines = adjacentMines;
+    }
+
+    public void toggleFlag()
+    {
+        hasFlag = !(isFlagged());
     }
 }

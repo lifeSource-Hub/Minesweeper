@@ -4,12 +4,12 @@ import minesweeper.controller.Command;
 import minesweeper.controller.PanelController;
 import minesweeper.controller.Minefield;
 import minesweeper.controller.MinefieldPlot;
+import org.pmw.tinylog.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-// TODO win condition
 public class GridPanel extends JPanel
 {
     // TODO create game difficulty class which stores current state
@@ -18,6 +18,7 @@ public class GridPanel extends JPanel
     private JLabel[][] gridLbl;
     private ButtonIcon icon;
     private PanelController panelController;
+    private int coveredSpaces;
 
     GridPanel()
     {
@@ -37,6 +38,7 @@ public class GridPanel extends JPanel
         this.difficulty = difficulty;
         int gridRows = difficulty.getHeight();
         int gridCols = difficulty.getWidth();
+        coveredSpaces = gridRows * gridCols;
 
         gridLbl = new JLabel[gridRows][gridCols];
         minefield = new Minefield(gridRows, gridCols);
@@ -44,12 +46,11 @@ public class GridPanel extends JPanel
         setLayout(new GridLayout(gridRows, gridCols));
 
         initializeGrid();
-        // panelController.setMenuDifficultyIcon(difficulty);
         revalidate();
         repaint();
     }
 
-    public void setPanelController(PanelController panelController)
+    void setPanelController(PanelController panelController)
     {
         this.panelController = panelController;
     }
@@ -58,7 +59,6 @@ public class GridPanel extends JPanel
     {
         return difficulty;
     }
-    // TODO should we be creating & adding a new grid each time? size may change
 
     private void initializeGrid()
     {
@@ -107,16 +107,8 @@ public class GridPanel extends JPanel
         else if (SwingUtilities.isRightMouseButton(event))
         {
             // Logger.debug("Label right clicked at row " + row + ", col " + col);
+            toggleFlagIcon(flagged, eventLbl);
             minefield.getPlot(row, col).toggleFlag();
-
-            if (flagged)
-            {
-                removeFlag(eventLbl);
-            }
-            else
-            {
-                displayFlag(eventLbl);
-            }
         }
     }
 
@@ -156,7 +148,7 @@ public class GridPanel extends JPanel
                     newIcon = icon.EIGHT;
                     break;
                 default:
-                    newIcon = icon.MISFLAGGED_SPACE;
+                    newIcon = icon.EMPTY;
             }
 
             gridLbl[row][col].setIcon(newIcon);
@@ -167,13 +159,13 @@ public class GridPanel extends JPanel
             extend(row, col);
         }
 
+        coveredSpaces--;
         removeMListeners(gridLbl[row][col]);
 
-        // TODO victory condition
-        // victory condition == all spaces without a mine are uncovered (doesn't matter if mines are marked)
-        //      use a counter?
-        // a) compare (total spaces - total mine count) to uncovered spaces
-        // b) compare total remaining covered spaces to total mine count
+        if (minefield.getTotalMineCount() == coveredSpaces)
+        {
+            winGame();
+        }
     }
 
     private void extend(int row, int col)
@@ -186,7 +178,7 @@ public class GridPanel extends JPanel
                 if ((i < gridLbl.length && j < gridLbl[row].length)
                         && (i >= 0 && j >= 0))
                 {
-                    // Ensure there is no mine and it has not already been set
+                    // Ensure there is no mine and space has not already been uncovered
                     if (!(minefield.getPlot(i, j).isMined())
                             && gridLbl[i][j].getIcon() == icon.DEFAULT)
                     {
@@ -197,14 +189,38 @@ public class GridPanel extends JPanel
         }
     }
 
-    private void displayFlag(JLabel label)
+    private void toggleFlagIcon(boolean flagged, JLabel label)
     {
-        label.setIcon(icon.FLAG);
+        if (flagged)
+        {
+            label.setIcon(icon.DEFAULT);
+        }
+        else
+        {
+            label.setIcon(icon.FLAG);
+        }
     }
 
-    private void removeFlag(JLabel label)
+    private void winGame()
     {
-        label.setIcon(icon.DEFAULT);
+        for (int i = 0; i < gridLbl.length; i++)
+        {
+            for (int j = 0; j < gridLbl[i].length; j++)
+            {
+                if (gridLbl[i][j].getIcon() == icon.DEFAULT
+                || gridLbl[i][j].getIcon() == icon.FLAG)
+                {
+                    removeMListeners(gridLbl[i][j]);
+                }
+
+                if (gridLbl[i][j].getIcon() == icon.DEFAULT)
+                {
+                    toggleFlagIcon(minefield.getPlot(i, j).isFlagged(), gridLbl[i][j]);
+                }
+            }
+        }
+
+        panelController.setHeaderGameOver(true);
     }
 
     private void loseGame(JLabel clickedLbl)
@@ -229,7 +245,7 @@ public class GridPanel extends JPanel
         }
 
         clickedLbl.setIcon(icon.EXPLODED);
-        panelController.setSmiley(icon.SMILEY_DEAD);
+        panelController.setHeaderGameOver(false);
     }
 
     private void removeMListeners(JLabel label)

@@ -3,8 +3,8 @@ package minesweeper.controller;
 import minesweeper.view.AppFrame;
 
 // TODO add comments and javadoc where appropriate
-// TODO make variables final where appropriate
-// TODO more tests!
+//  make variables final where appropriate
+//  more tests!
 public class Main
 {
     public static void main(String[] args)

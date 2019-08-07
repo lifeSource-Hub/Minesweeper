@@ -1,35 +1,58 @@
 package minesweeper.controller;
 
+import org.pmw.tinylog.Logger;
+
 import java.util.Random;
 
 public class Minefield
 {
-    private final int FIELD_ROWS;
-    private final int FIELD_COLS;
     private MinefieldPlot[][] field;
     private Random random;
+    private int totalMineCount;
 
     public Minefield(int fieldRows, int fieldCols)
     {
-        this.FIELD_ROWS = fieldRows;
-        this.FIELD_COLS = fieldCols;
-        field = new MinefieldPlot[FIELD_ROWS][FIELD_COLS];
+        field = new MinefieldPlot[fieldRows][fieldCols];
         random = new Random();
+        boolean randomBool;
 
         for (int row = 0; row < field.length; row++)
         {
             for (int col = 0; col < field[row].length; col++)
             {
-                field[row][col] = new MinefieldPlot(getRandomBool());
+                randomBool = getRandomBool();
+                field[row][col] = new MinefieldPlot(randomBool);
+
+                if (randomBool)
+                {
+                    totalMineCount++;
+                }
             }
         }
 
         countAdjacentMines();
+        Logger.debug("Total mine count: " + totalMineCount);
     }
 
     public MinefieldPlot getPlot(int x, int y)
     {
         return field[x][y];
+    }
+
+    public int getMineCount(int x, int y)
+    {
+        return field[x][y].getAdjacentMines();
+    }
+
+    private boolean getRandomBool()
+    {
+        // Odds of returning false (setting a mine) are 1:6
+        return random.nextInt(6) == 0;
+    }
+
+    public int getTotalMineCount()
+    {
+        return totalMineCount;
     }
 
     private void countAdjacentMines()
@@ -62,11 +85,6 @@ public class Minefield
         }
     }
 
-    public int getMineCount(int x, int y)
-    {
-        return field[x][y].getAdjacentMines();
-    }
-
     // For counting neighboring mines of a single mine
     // public int getMineCount(int x, int y)
     // {
@@ -91,9 +109,4 @@ public class Minefield
     //
     //     return adjacentMines;
     // }
-
-    private boolean getRandomBool()
-    {
-        return random.nextInt(6) == 0;
-    }
 }

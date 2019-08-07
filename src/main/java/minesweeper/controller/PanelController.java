@@ -8,7 +8,7 @@ import javax.swing.*;
 public class PanelController
 {
     private HeaderPanel headerPnl;
-    private GridPanel gridPanel;
+    private GridPanel gridPnl;
 
     public PanelController()
     {}
@@ -18,31 +18,26 @@ public class PanelController
         this.headerPnl = headerPnl;
     }
 
-    public void setGridPnl(GridPanel gridPanel)
+    public void setGridPnl(GridPanel gridPnl)
     {
-        this.gridPanel = gridPanel;
+        this.gridPnl = gridPnl;
     }
 
-    public void setSmiley(ImageIcon smiley_dead)
+    public void setHeaderGameOver(boolean victory)
     {
-        headerPnl.setSmiley(smiley_dead);
-    }
-
-    public void setMenuDifficultyIcon(Command difficulty)
-    {
-        headerPnl.setMenuDifficultyIcon(difficulty);
+        headerPnl.gameOver(victory);
     }
 
     public void newGame()
     {
-        newGame(gridPanel.getDifficulty());
+        newGame(gridPnl.getDifficulty());
     }
 
     public void newGame(Command selection)
     {
-        gridPanel.setupGrid(selection);
+        gridPnl.setupGrid(selection);
 
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(gridPanel);
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(gridPnl);
         frame.pack();
     }
 }

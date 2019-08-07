@@ -26,32 +26,35 @@ import java.io.IOException;
 
 public class ButtonIcon
 {
-    public final ImageIcon DEFAULT;
-    public final ImageIcon EMPTY;
-    public final ImageIcon ONE;
-    public final ImageIcon TWO;
-    public final ImageIcon THREE;
-    public final ImageIcon FOUR;
-    public final ImageIcon FIVE;
-    public final ImageIcon SIX;
-    public final ImageIcon SEVEN;
-    public final ImageIcon EIGHT;
-    public final ImageIcon FLAG;
-    public final ImageIcon UNFLAGGED_MINE;
-    public final ImageIcon EXPLODED;
-    public final ImageIcon MISFLAGGED_SPACE;
-    public final ImageIcon CHECK;
+    final ImageIcon CHECK;
 
-    public final ImageIcon SMILEY_DEFAULT;
-    public final ImageIcon SMILEY_PRESSED;
-    public final ImageIcon SMILEY_SUSPENSE;
-    public final ImageIcon SMILEY_WIN;
-    public final ImageIcon SMILEY_DEAD;
+    final ImageIcon DEFAULT;
+    final ImageIcon EMPTY;
+    final ImageIcon ONE;
+    final ImageIcon TWO;
+    final ImageIcon THREE;
+    final ImageIcon FOUR;
+    final ImageIcon FIVE;
+    final ImageIcon SIX;
+    final ImageIcon SEVEN;
+    final ImageIcon EIGHT;
+    final ImageIcon FLAG;
+    final ImageIcon UNFLAGGED_MINE;
+    final ImageIcon EXPLODED;
+    final ImageIcon MISFLAGGED_SPACE;
 
-    public final BufferedImage FRAME_ICON;
+    final ImageIcon SMILEY_DEFAULT;
+    final ImageIcon SMILEY_PRESSED;
+    final ImageIcon SMILEY_SUSPENSE;
+    final ImageIcon SMILEY_WIN;
+    final ImageIcon SMILEY_DEAD;
 
-    public ButtonIcon()
+    final BufferedImage FRAME_ICON;
+
+    ButtonIcon()
     {
+        CHECK = read("check.png");
+
         DEFAULT = read("default.png");
         EMPTY = read("empty.png");
         ONE = read("one.png");
@@ -66,7 +69,6 @@ public class ButtonIcon
         UNFLAGGED_MINE = read("unflaggedMine.png");
         EXPLODED = read("exploded.png");
         MISFLAGGED_SPACE = read("misflaggedSpace.png");
-        CHECK = read("check.png");
 
         SMILEY_DEFAULT = read("smiley.png");
         SMILEY_PRESSED = read("smileyPressed.png");

@@ -7,14 +7,12 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class HeaderPanel extends JPanel // implements ActionListener
+public class HeaderPanel extends JPanel
 {
     private PanelController panelController;
-    // private Controllable controllable;
     private MouseAdapter mAdapter;
     private Action menuNewGameHandler;
     private Action menuDifficultyHandler;
@@ -58,14 +56,7 @@ public class HeaderPanel extends JPanel // implements ActionListener
         mItemBeginner.addActionListener(menuDifficultyHandler);
         mItemIntermediate.addActionListener(menuDifficultyHandler);
         mItemExpert.addActionListener(menuDifficultyHandler);
-        mItemExit.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                System.exit(0);
-            }
-        });
+        mItemExit.addActionListener(e -> System.exit(0));
 
         mItemNew.setActionCommand(Command.NEW.name());
         mItemBeginner.setActionCommand(Command.BEGINNER.name());
@@ -104,44 +95,30 @@ public class HeaderPanel extends JPanel // implements ActionListener
         setMenuDifficultyIcon(Command.BEGINNER);
     }
 
-    // TODO improve setMenuItemIcon efficiency
-    public void setPanelController(PanelController panelController)
+    void setPanelController(PanelController panelController)
     {
         this.panelController = panelController;
     }
 
-    public void setSmiley(ImageIcon icon)
+    private void setSmiley(ImageIcon icon)
     {
         previousSmiley = (ImageIcon) smiley.getIcon();
         smiley.setIcon(icon);
     }
 
-    // void setControllable(Controllable controllable)
-    // {
-    //     this.controllable = controllable;
-    // }
-
     public void setMenuDifficultyIcon(Command difficulty)
     {
-        for (Component menuComponent : gameMenu.getMenuComponents())
-        {
-            if (menuComponent instanceof JMenuItem)
-            {
-                ((JMenuItem) menuComponent).setIcon(null);
-            }
-        }
-
         switch (difficulty)
         {
             case BEGINNER:
                 mItemBeginner.setIcon(icon.CHECK);
-                // mItemIntermediate.setIcon(null);
-                // mItemExpert.setIcon(null);
+                mItemIntermediate.setIcon(null);
+                mItemExpert.setIcon(null);
                 break;
             case INTERMEDIATE:
-                // mItemBeginner.setIcon(null);
+                mItemBeginner.setIcon(null);
                 mItemIntermediate.setIcon(icon.CHECK);
-                // mItemExpert.setIcon(null);
+                mItemExpert.setIcon(null);
                 break;
             case EXPERT:
                 mItemBeginner.setIcon(null);
@@ -177,7 +154,6 @@ public class HeaderPanel extends JPanel // implements ActionListener
                     {
                         // Logger.debug("Smiley Released");
                         setSmiley(icon.SMILEY_DEFAULT);
-                        // controllable.controlEvent(new CommandEvent(Command.NEW));
                         panelController.newGame();
                     }
                     else
@@ -224,6 +200,7 @@ public class HeaderPanel extends JPanel // implements ActionListener
 
                 panelController.newGame(selection);
                 setSmiley(icon.SMILEY_DEFAULT);
+                setMenuDifficultyIcon(selection);
             }
         };
     }
@@ -240,12 +217,15 @@ public class HeaderPanel extends JPanel // implements ActionListener
         }
     }
 
-    // @Override
-    // public void actionPerformed(ActionEvent e)
-    // {
-    //     Logger.debug(e.getActionCommand());
-    //     Command selection = Command.getCommand(e.getActionCommand());
-    //
-    //     controllable.controlEvent(new CommandEvent(selection));
-    // }
+    public void gameOver(boolean victory)
+    {
+        if (victory)
+        {
+            setSmiley(icon.SMILEY_WIN);
+        }
+        else
+        {
+            setSmiley(icon.SMILEY_DEAD);
+        }
+    }
 }
